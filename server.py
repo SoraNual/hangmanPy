@@ -55,8 +55,9 @@ livesRemaining = 5
 guessed_letters = []
 alphabetPrompt = "a b c d e f g h i j k l m n\no p q r s t u v w x y z"
 gameStart = False
+gameEnd = False
 
-while True:
+while(not gameEnd):
     connectionSocket, addr = serverSocket.accept()
     # read data received from client
     receivedAlphabet = connectionSocket.recv(1024).decode().strip().lower()
@@ -84,6 +85,7 @@ while True:
             reply = f"{livesRemaining},bruh ¯\_(ツ)_/¯"
         else:
             reply = f"{STATUS_PLAYER_LOSE},You LOSE! (╯°□°）╯︵ ┻━┻\nThe correct word is {answer}!"
+            gameEnd = True
     
     # generate word display
     displayWord = ""
@@ -97,6 +99,7 @@ while True:
 
     if("_" not in displayWord):
         reply = f"{STATUS_PLAYER_WIN},Congratulations! ╰(*°▽°*)╯\nThe correct word is {answer}!"
+        gameEnd = True
     
     reply += ",---------\n" + displayWord
     print(reply)
