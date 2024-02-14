@@ -70,21 +70,26 @@ while(not gameEnd):
         
     elif(len(receivedAlphabet)!=1 or not receivedAlphabet.isalpha()):
         reply = f"{STATUS_INVALID_CHARACTER},Please... That's not what you should answer :)"
+        print("invalid input from player")
 
     elif(receivedAlphabet in guessed_letters):
         reply = f"{STATUS_ALREADY_GUESSED},You've already guessed that alphabet!"
+        print(f"player guessed \"{receivedAlphabet}\" already")
     
     elif(receivedAlphabet in answer):
         reply = f"{livesRemaining},great choice! That alphabet is in the answer."
+        print(f"Player's guess is \"{receivedAlphabet}\". It's in the target word.")
         guessed_letters.append(receivedAlphabet)
     
     else:
         livesRemaining -= 1
         guessed_letters.append(receivedAlphabet)
         if(livesRemaining>0):
-            reply = f"{livesRemaining},bruh ¯\_(ツ)_/¯"
+            print(f"Player's guess is \"{receivedAlphabet}\". It's NOT in the target word.")
+            reply = f"{livesRemaining},That's incorrect! ¯\_(ツ)_/¯"
         else:
-            reply = f"{STATUS_PLAYER_LOSE},You LOSE! (╯°□°）╯︵ ┻━┻\nThe correct word is {answer}!"
+            reply = f"{STATUS_PLAYER_LOSE},You LOSE! (╯°□°）╯︵ ┻━┻\nThe correct word is \"{answer}\"!"
+            print("Player Lose")
             gameEnd = True
     
     # generate word display
@@ -98,11 +103,12 @@ while(not gameEnd):
             displayWord += "_"
 
     if("_" not in displayWord):
-        reply = f"{STATUS_PLAYER_WIN},Congratulations! ╰(*°▽°*)╯\nThe correct word is {answer}!"
+        print("Player wins")
+        reply = f"{STATUS_PLAYER_WIN},Congratulations! ╰(*°▽°*)╯\nThe correct word is \"{answer}\"!"
         gameEnd = True
     
     reply += ",---------\n" + displayWord
-    print(reply)
+    #print(reply)
     print("guessed letters:",guessed_letters)
 
     for letter in guessed_letters:
@@ -112,3 +118,4 @@ while(not gameEnd):
     connectionSocket.send(reply.encode())
     
     connectionSocket.close()
+    print("--------------")
